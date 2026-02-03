@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "inventory_db")
+@Table(name = "inventory")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +18,7 @@ public class Inventory {
     private UUID id;
     private String productId;
     private int quantity;
+    private int reservedQty;
+    @Version
+    private int version;
 }
