@@ -13,6 +13,7 @@
     <modules>
         <module>cratemind-common</module>
         <module>order-service</module>
+        <module>inventory-service</module>
     </modules>
 
     <properties>

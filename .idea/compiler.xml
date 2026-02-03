@@ -15,6 +15,7 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
         </processorPath>
+        <module name="inventory-service" />
         <module name="order-service" />
       </profile>
     </annotationProcessing>
@@ -23,6 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CrateMind" options="" />
       <module name="cratemind-common" options="" />
+      <module name="inventory-service" options="" />
       <module name="order-service" options="-parameters" />
     </option>
   </component>
