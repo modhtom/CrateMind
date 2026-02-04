@@ -130,8 +130,6 @@ sequenceDiagram
 
 ## Data Dictionary (Schema)
 
-These are the strict schemas for our 4 database instances.
-
 Order DB (order_db)
 
 | **Table** | **Column** | **Type** | **Notes** |
@@ -216,8 +214,6 @@ cratemind-platform/ (Root POM)
 
 ### A. Service Port Registry
 
-Configure your `application.yml` and `docker-compose` with these exact ports.
-
 | **Service** | **App Port** | **DB Port (Host:Container)** | **Debug Port** |
 | --- | --- | --- | --- |
 | **Order Service** | `8081` | `5432:5432` | `5005` |
@@ -229,8 +225,6 @@ Configure your `application.yml` and `docker-compose` with these exact ports.
 
 ### B. Kafka Topic Registry
 
-Define these as `public static final String` constants in `cratemind-common`.
-
 | **Logic Flow** | **Topic Name** | **Partitions** |
 | --- | --- | --- |
 | Order Created | `order.created` | 3 |
@@ -239,25 +233,3 @@ Define these as `public static final String` constants in `cratemind-common`.
 | Stock Reserved | `inventory.reserved` | 3 |
 | Stock Released | `inventory.released` | 3 |
 | **DLQ Pattern** | `{original_topic}.dlq` | 1 |
-
-### C. API Contract: `POST /orders` (For Sprint 1)
-
-This is the JSON payload you need to support in Sprint 1.
-
-```json
-POST http://localhost:8081/orders
-Content-Type: application/json
-{
-  "customerId": "user_123_abc",
-  "items": [
-    {
-      "productId": "prod_apple_01",
-      "quantity": 5
-    },
-    {
-      "productId": "prod_milk_2L",
-      "quantity": 2
-    }
-  ]
-}
-```
