@@ -225,11 +225,13 @@ cratemind-platform/ (Root POM)
 
 ### B. Kafka Topic Registry
 
-| **Logic Flow** | **Topic Name** | **Partitions** |
-| --- | --- | --- |
-| Order Created | `order.created` | 3 |
-| Order Packed | `order.packed` | 3 |
-| Packing Failed | `order.failed_packing` | 3 |
-| Stock Reserved | `inventory.reserved` | 3 |
-| Stock Released | `inventory.released` | 3 |
-| **DLQ Pattern** | `{original_topic}.dlq` | 1 |
+| **Logic Flow**     | **Topic Name**      | **Partitions** |
+|--------------------|---------------------| --- |
+| Order Created      | `order.created`     | 3 |
+| Order Packed       | `order.packed`      | 3 |
+| Packing Failed     | `order.failed_packing` | 3 |
+| Stock Reserved     | `inventory.reserved` | 3 |
+| Stock Released     | `inventory.released` | 3 |
+| Delivery Scheduled | `delivery.scheduled` | 3 |
+| Delivery Failed    | `delivery.failed`   | 3 |
+| **DLQ Pattern**    | `{original_topic}.dlq` | 1 |
