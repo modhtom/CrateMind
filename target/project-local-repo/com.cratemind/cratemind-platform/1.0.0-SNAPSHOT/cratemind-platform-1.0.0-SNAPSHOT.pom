@@ -14,6 +14,7 @@
         <module>cratemind-common</module>
         <module>order-service</module>
         <module>inventory-service</module>
+        <module>packing-service</module>
     </modules>
 
     <properties>

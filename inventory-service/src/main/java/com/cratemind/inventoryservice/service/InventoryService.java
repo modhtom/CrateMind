@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -65,11 +66,11 @@ public class InventoryService {
             logEntry.setCreated_at(Instant.now());
             if (reservationSuccess) {
                 logEntry.setStatus(InventoryStatus.PENDING);
-                InventoryCreatedEvent invEvent = mapToOrderEvent(logEntry);
+                InventoryCreatedEvent invEvent = mapToOrderEvent(logEntry,event.items());
                 kafkaTemplate.send("inventory.reserved", logEntry.getMessage_id().toString(), invEvent);
             } else {
                 logEntry.setStatus(InventoryStatus.FAILED);
-                InventoryCreatedEvent invEvent = mapToOrderEvent(logEntry);
+                InventoryCreatedEvent invEvent = mapToOrderEvent(logEntry,event.items());
                 kafkaTemplate.send("inventory.released", logEntry.getMessage_id().toString(), invEvent);
                 throw new RuntimeException("Inventory reservation failed due to insufficient stock");
             }
@@ -83,11 +84,12 @@ public class InventoryService {
         }
     }
 
-    private InventoryCreatedEvent mapToOrderEvent(IdempotencyLog inv){
+    private InventoryCreatedEvent mapToOrderEvent(IdempotencyLog inv, List<OrderItem> items){
         return new InventoryCreatedEvent(
                 inv.getMessage_id(),
                 inv.getStatus().toString(),
-                inv.getCreated_at()
+                inv.getCreated_at(),
+                items
         );
     }
 }

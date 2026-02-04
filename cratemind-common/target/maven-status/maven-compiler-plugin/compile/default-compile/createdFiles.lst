@@ -1,2 +1,4 @@
 com\cratemind\common\event\OrderItem.class
+com\cratemind\common\event\PackCreatedEvent.class
+com\cratemind\common\event\InventoryCreatedEvent.class
 com\cratemind\common\event\OrderCreatedEvent.class
