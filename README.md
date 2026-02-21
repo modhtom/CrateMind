@@ -209,6 +209,56 @@ cratemind-platform/ (Root POM)
 ```
 
 ---
+## Local Development (Kubernetes)
+
+A local Kubernetes setup to better mirror production, isolate resource-intensive services, and manage Kafka event bus effectively.
+
+### Prerequisites
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/) or [Kind](https://kind.sigs.k8s.io/)
+- `kubectl` configured
+
+### Kubernetes Structure
+
+```text
+k8s/
+├── base/
+│   ├── zookeeper.yaml      # StatefulSet & Service (Port 2181)
+│   ├── kafka.yaml          # StatefulSet & Headless Service (Port 9092)
+│   ├── postgres.yaml       # StatefulSet, Secrets, & Storage (Port 5432)
+│   └── postgres-init.yaml  # ConfigMap to split DB schemas
+├── apps/
+│   ├── microservices.yaml  # Deployments for Order, Inventory, and Delivery
+│   └── packing-service.yaml# Deployment with isolated CPU limits (500m/2000m)
+└── networking/
+    └── ingress.yaml        # NGINX Ingress routing for api.cratemind.local
+```
+### Running the Cluster
+
+1. **Start the foundation (Databases & Event Bus):**
+```bash
+kubectl apply -f k8s/base/
+```
+
+2. **Deploy the CrateMind microservices:**
+```bash
+kubectl apply -f k8s/apps/
+```
+
+3. **Expose the API Gateway:**
+```bash
+kubectl apply -f k8s/networking/ingress.yaml
+```
+
+4. **Update your `/etc/hosts` file:**
+
+Map your local cluster IP to the ingress host:
+```text
+127.0.0.1 api.cratemind.local
+```
+
+*(Get the IP via `minikube ip` and use that instead of `127.0.0.1`)*
+
+---
 
 ## Technical Appendix
 

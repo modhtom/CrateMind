@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: packing-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: packing-service
+  template:
+    metadata:
+      labels:
+        app: packing-service
+    spec:
+      containers:
+      - name: packing-service
+        image: cratemind/packing-service:latest
+        ports:
+        - containerPort: 8083
+        resources:
+          requests:
+            cpu: "500m"
+          limits:
+            cpu: "2000m"
+        env:
+        - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka-headless.default.svc.cluster.local:9092"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://postgres:5432/packing_db"
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: packing-db-secret
+              key: POSTGRES_USER
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: packing-db-secret
+              key: POSTGRES_PASSWORD
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8083
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: packing-service
+spec:
+  ports:
+  - port: 8083
+  selector:
+    app: packing-service
