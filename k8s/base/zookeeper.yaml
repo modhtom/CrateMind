@@ -32,7 +32,7 @@ spec:
         ports:
         - containerPort: 2181
           name: client
-        environment:
+        env:
         - name: ZOOKEEPER_CLIENT_PORT
           value: "2181"
         - name: ZOOKEEPER_TICK_TIME
